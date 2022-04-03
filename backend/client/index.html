@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>twitter oauth login</title>
+  </head>
+  <body>
+    <h1>twitter oauth login</h1>
+    <br />
+
+    <!-- We probably only need one of these types of logins -->
+    <!-- Also move to frontend -->
+    <!-- // With oauth/authenticate if the user is signed into twitter.com
+    // and has previously authorized the application to access their account
+    // they will be silently redirected back to the app. With oauth/authorize
+    // the user will see the allow screen regardless if they have previously authorized the app. -->
+    <a href="/twitter/authorize">log in with twitter (authorize)</a>
+    <br />
+    or
+    <br />
+    <a href="/twitter/authenticate">log in with twitter (authenticate)</a>
+    <br />
+    and get started
+  </body>
+</html>

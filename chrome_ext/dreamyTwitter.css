@@ -1,0 +1,4 @@
+/* Remove Twitter trending news because I hate it */
+div[aria-label="Timeline: Trending now"] {
+  display: none;
+}
