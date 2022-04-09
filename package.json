@@ -6,5 +6,22 @@
     "server": "cd backend && nodemon server.js",
     "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\""
+  },
+  "name": "dreamyextension",
+  "description": "There are 3 parts to this repo:",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DashBarkHuss/dreamy_extension.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DashBarkHuss/dreamy_extension/issues"
+  },
+  "homepage": "https://github.com/DashBarkHuss/dreamy_extension#readme",
+  "dependencies": {
+    "concurrently": "^7.1.0"
   }
 }
