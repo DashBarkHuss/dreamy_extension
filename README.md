@@ -11,8 +11,9 @@ There are 3 parts to this repo:
 <hr>
 
 1. `$ cd frontend`
-2. `$ npm run start`
-3. In the VSCODE Debugger run _Attach Client+Server_
+2. `$ npm i`
+3. `$ npm run start`
+4. In the VSCODE Debugger run _Attach Client+Server_
 
 ## How to start the chrome extension
 
