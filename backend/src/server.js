@@ -10,7 +10,8 @@ const port = 3001;
 const {
   MONGO_URI,
   COOKIE_SECRET,
-  TWITTER_CALLBACK_REDIRECT
+  TWITTER_CALLBACK_REDIRECT,
+  DREAM_ENV
 } = process.env;
 
 const {
@@ -70,11 +71,15 @@ async function main() {
   );
 
   const origins = [
-    "http://localhost:3000",
     "https://www.twitter.com",
     "https://twitter.com",
     "chrome-extension://mbgafdoeommcbfkhcnngibcjfbenocmo", //chrome extension not sure if this is needed
   ];
+
+  // NOTE: only the development environment should have a client on
+  // localhost that can access the api
+  const devOnlyOrigins = DREAM_ENV === "development" ? ["http://localhost:3000"] : [];
+
 
   app.use((req, res, next) => {
     console.log("silly", `${req.method}: ${req.path}`);
@@ -85,7 +90,7 @@ async function main() {
         // allow requests with no origin
         // (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (origins.indexOf(origin) === -1) {
+        if ([...origins, ...devOnlyOrigins].indexOf(origin) === -1) {
           console.log("origin----", origin);
           console.log("origins----", origin);
           const msg =
