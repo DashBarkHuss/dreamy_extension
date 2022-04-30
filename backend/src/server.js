@@ -289,7 +289,6 @@ async function main() {
       "user succesfully logged in with twitter",
       user.screen_name
     );
-    // NOTE: it might be fine to just redirect to '/' for all cases? hostname is inferred
     req.session.save(() => res.redirect(TWITTER_CALLBACK_REDIRECT));
   });
 
