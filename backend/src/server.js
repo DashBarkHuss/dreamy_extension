@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
@@ -5,7 +6,14 @@ const SessionMongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const port = 3001;
-const mongoUri = process.env.MONGO_URI;
+
+const {
+  MONGO_URI,
+  COOKIE_SECRET,
+  TWITTER_CALLBACK_REDIRECT,
+  DREAM_ENV
+} = process.env;
+
 const {
   getOAuthRequestToken,
   getOAuthAccessTokenWith,
@@ -37,9 +45,6 @@ const addUser = async (screenName, twitterId) => {
   const user = new User({ screenName, twitterId });
   await user.save();
 };
-//
-
-const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 main().catch((err) => console.error(err.message, err));
 
@@ -52,7 +57,7 @@ async function main() {
       resave: true,
       secret: COOKIE_SECRET || "secret",
       store: SessionMongoStore.create({
-        mongoUrl: mongoUri,
+        mongoUrl: MONGO_URI,
       }),
       cookie: {
         //   maxAge: 7 * 24 * 60 * 60 * 1000, // this is the key;
@@ -66,11 +71,15 @@ async function main() {
   );
 
   const origins = [
-    "http://localhost:3000",
     "https://www.twitter.com",
     "https://twitter.com",
     "chrome-extension://mbgafdoeommcbfkhcnngibcjfbenocmo", //chrome extension not sure if this is needed
   ];
+
+  // NOTE: only the development environment should have a client on
+  // localhost that can access the api
+  const devOnlyOrigins = DREAM_ENV === "development" ? ["http://localhost:3000"] : [];
+
 
   app.use((req, res, next) => {
     console.log("silly", `${req.method}: ${req.path}`);
@@ -81,7 +90,7 @@ async function main() {
         // allow requests with no origin
         // (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (origins.indexOf(origin) === -1) {
+        if ([...origins, ...devOnlyOrigins].indexOf(origin) === -1) {
           console.log("origin----", origin);
           console.log("origins----", origin);
           const msg =
@@ -280,7 +289,7 @@ async function main() {
       "user succesfully logged in with twitter",
       user.screen_name
     );
-    req.session.save(() => res.redirect("http://localhost:3000/"));
+    req.session.save(() => res.redirect(TWITTER_CALLBACK_REDIRECT));
   });
 
   app.use((err, req, res, next) => {
@@ -295,7 +304,7 @@ async function main() {
       // useFindAndModify: false,
     });
 
-  dbConnect(mongoUri)
+  dbConnect(MONGO_URI)
     .then(() => {
       console.log(`Connected to MongoDB ${"dreamy twitter"}`);
       app

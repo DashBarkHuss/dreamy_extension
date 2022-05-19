@@ -8,12 +8,21 @@ There are 3 parts to this repo:
 
 ## How to Start frontend and backend
 
+### Frontend
 <hr>
 
 1. `$ cd frontend`
-2. `$ npm run start`
-3. In the VSCODE Debugger run _Attach Client+Server_
+2. `$ npm i`
+3. `$ npm run start`
+4. In the VSCODE Debugger run _Attach Client+Server_
 
+### Backend
+```
+cd backend
+npm i
+# Install docker if you don't have it https://docs.docker.com/get-docker/
+docker-compose up --build
+```
 ## How to start the chrome extension
 
 <hr>
